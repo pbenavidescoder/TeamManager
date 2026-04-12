@@ -1,0 +1,52 @@
+﻿@page "/playerlist"
+@using TeamManager.UI.Models
+@inject HttpClient Http
+
+
+<PageTitle>Jugadores</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Lista de jugadores</MudText>
+<MudText Typo="Typo.body1" Class="mb-8">Maxibaloncesto Heredia</MudText>
+
+@if (@players == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="@players" Hover="true" SortLabel="Sort By" Elevation="2" AllowUnsorted="false" Dense="true">
+        <HeaderContent>
+            <MudTh>#</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.FirstName)">Nombre</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.LastName)">Apellidos</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Category)">Categoría</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Position)">Posición</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Status)">Estado</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Jersey)">Jersey</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="#">@(players.IndexOf(context) + 1)</MudTd>
+            <MudTd DataLabel="Nombre">@context.FirstName</MudTd>
+            <MudTd DataLabel="Apellidos">@context.LastName</MudTd>
+            <MudTd DataLabel="Categoria">@context.Category</MudTd>
+            <MudTd DataLabel="Posición">@context.Position</MudTd>
+            <MudTd DataLabel="Estado">@context.Status</MudTd>
+            <MudTd DataLabel="Jersey">@context.Jersey</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+        </PagerContent>
+    </MudTable>
+    <p>Total de jugadores: @players.Count</p>
+
+}
+
+@code {
+    private List<Player> players = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        players = await Http.GetFromJsonAsync<List<Player>>("sample-data/players.json");
+    }
+
+}

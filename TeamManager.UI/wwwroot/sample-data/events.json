@@ -1,0 +1,95 @@
+{
+  "Events": [
+    {
+      "EventId": 1,
+      "EventType": "Training",
+      "Date": "2026-04-01T18:00:00",
+      "Location": "AIS Gym",
+      "Description": "Entrenamiento técnico y táctico"
+    },
+    {
+      "EventId": 2,
+      "EventType": "Training",
+      "Date": "2026-04-08T18:00:00",
+      "Location": "AIS Gym",
+      "Description": "Entrenamiento físico y resistencia"
+    },
+    {
+      "EventId": 3,
+      "EventType": "Training",
+      "Date": "2026-04-15T18:00:00",
+      "Location": "AIS Gym",
+      "Description": "Entrenamiento táctico grupal"
+    },
+    {
+      "EventId": 4,
+      "EventType": "Training",
+      "Date": "2026-04-22T18:00:00",
+      "Location": "AIS Gym",
+      "Description": "Entrenamiento de jugadas ensayadas"
+    },
+    {
+      "EventId": 5,
+      "EventType": "Training",
+      "Date": "2026-04-29T18:00:00",
+      "Location": "AIS Gym",
+      "Description": "Entrenamiento de cierre de mes"
+    },
+    {
+      "EventId": 6,
+      "EventType": "Match",
+      "Date": "2026-04-04T20:00:00",
+      "Location": "Gimnasio Nacional",
+      "Description": "Partido amistoso contra rivales locales"
+    },
+    {
+      "EventId": 7,
+      "EventType": "Match",
+      "Date": "2026-04-05T20:00:00",
+      "Location": "Gimnasio Nacional",
+      "Description": "Partido amistoso contra equipo visitante"
+    },
+    {
+      "EventId": 8,
+      "EventType": "Match",
+      "Date": "2026-04-11T20:00:00",
+      "Location": "Estadio Central",
+      "Description": "Partido de liga regional"
+    },
+    {
+      "EventId": 9,
+      "EventType": "Match",
+      "Date": "2026-04-12T20:00:00",
+      "Location": "Estadio Central",
+      "Description": "Partido de liga regional"
+    },
+    {
+      "EventId": 10,
+      "EventType": "Match",
+      "Date": "2026-04-18T20:00:00",
+      "Location": "Gimnasio Nacional",
+      "Description": "Partido amistoso contra equipo juvenil"
+    },
+    {
+      "EventId": 11,
+      "EventType": "Match",
+      "Date": "2026-04-19T20:00:00",
+      "Location": "Gimnasio Nacional",
+      "Description": "Partido amistoso contra veteranos"
+    },
+    {
+      "EventId": 12,
+      "EventType": "Match",
+      "Date": "2026-04-25T20:00:00",
+      "Location": "Estadio Central",
+      "Description": "Partido de liga regional"
+    },
+    {
+      "EventId": 13,
+      "EventType": "Match",
+      "Date": "2026-04-26T20:00:00",
+      "Location": "Estadio Central",
+      "Description": "Partido de liga regional"
+    }
+  ]
+}

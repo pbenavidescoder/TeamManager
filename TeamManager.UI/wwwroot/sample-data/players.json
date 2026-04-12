@@ -1,0 +1,142 @@
+﻿[
+  {
+    "PlayerId": 1,
+    "FirstName": "Paulino",
+    "LastName": "Benavides Gutiérrez",
+    "Category": "+45",
+    "Position": "Distribuidor",
+    "Status": "Activo",
+    "Jersey": "1",
+    "AvatarPath": "/images/avatars/1.jpg"
+  },
+  {
+    "PlayerId": 2,
+    "FirstName": "Enrique",
+    "LastName": "Paniagua Gutiérrez",
+    "Category": "+45",
+    "Position": "Alero",
+    "Status": "Activo",
+    "AvatarPath": "/images/avatars/2.jpg",
+    "Jersey": "2"
+  },
+  {
+    "PlayerId": 3,
+    "FirstName": "Glauco",
+    "LastName": "Soto Fajardo",
+    "Category": "+45",
+    "Position": "Alero",
+    "Status": "Activo",
+    "Jersey": "6",
+    "AvatarPath": "/images/avatars/3.jpg"
+  },
+  {
+    "PlayerId": 4,
+    "FirstName": "Hector",
+    "LastName": "Bonilla Miranda",
+    "Category": "+45",
+    "Position": "Distribuidor",
+    "Status": "Activo",
+    "Jersey": "8",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 5,
+    "FirstName": "Elmer",
+    "LastName": "Jimenez Parada",
+    "Category": "+45",
+    "Position": "Alero/Poste",
+    "Status": "Activo",
+    "Jersey": "9",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 6,
+    "FirstName": "Jose Carlos",
+    "LastName": "Rojas Vargas",
+    "Category": "+45",
+    "Position": "Alero",
+    "Status": "Activo",
+    "Jersey": "12",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 7,
+    "FirstName": "Michael",
+    "LastName": "Obando González",
+    "Category": "+45",
+    "Position": "Alero/Poste",
+    "Status": "Activo",
+    "Jersey": "?",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 8,
+    "FirstName": "Melvin",
+    "LastName": "Thyne Hodgson",
+    "Category": "+45",
+    "Position": "Poste",
+    "Status": "Activo",
+    "Jersey": "?",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 9,
+    "FirstName": "Humberto",
+    "LastName": "Calvo Valerio",
+    "Category": "+45",
+    "Position": "Poste/Centro",
+    "Status": "Activo",
+    "Jersey": "?",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 10,
+    "FirstName": "Jaime",
+    "LastName": "Carro Gutiérrez",
+    "Category": "+45",
+    "Position": "Alero",
+    "Status": "Activo",
+    "Jersey": "31",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 11,
+    "FirstName": "Alfonso",
+    "LastName": "Escobar Zornosa",
+    "Category": "+45",
+    "Position": "Poste/Centro",
+    "Status": "Activo",
+    "Jersey": "38",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 12,
+    "FirstName": "Randall",
+    "LastName": "Macis Marín",
+    "Category": "+45",
+    "Position": "Poste",
+    "Status": "Activo",
+    "Jersey": "?",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 13,
+    "FirstName": "Ramón",
+    "LastName": "Chinchilla Piedra",
+    "Category": "+45",
+    "Position": "Distribuidor",
+    "Status": "Activo",
+    "Jersey": "48",
+    "AvatarPath": "/images/avatars/4.jpg"
+  },
+  {
+    "PlayerId": 14,
+    "FirstName": "Josue",
+    "LastName": "Solano Segura",
+    "Category": "+45",
+    "Position": "Alero/Poste",
+    "Status": "Activo",
+    "Jersey": "58",
+    "AvatarPath": "/images/avatars/4.jpg"
+  }
+]

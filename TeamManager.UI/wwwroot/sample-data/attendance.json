@@ -1,0 +1,170 @@
+{
+  "Events": [
+    {
+      "EventId": 1,
+      "EventType": "Training",
+      "Date": "2026-04-12T18:00:00",
+      "Location": "AIS Gym",
+      "Description": "Practica técnica y táctica"
+    },
+    {
+      "EventId": 2,
+      "EventType": "Match",
+      "Date": "2026-04-15T20:00:00",
+      "Location": "Gimnasio Nacional",
+      "Description": "Juego Contra Amigos"
+    }
+  ],
+  "Attendances": [
+    {
+      "AttendanceId": 101,
+      "EventId": 1,
+      "PlayerId": 5,
+      "LastName": "Jimenez Parada",
+      "FirstName": "Elmer",
+      "Present": true,
+      "Category": "+45",
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 102,
+      "EventId": 1,
+      "PlayerId": 6,
+      "LastName": "Rojas Vargas",
+      "FirstName": "Jose Carlos",
+      "Present": true,
+      "Category": "+45",
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 103,
+      "EventId": 1,
+      "PlayerId": 1,
+      "LastName": "Benavides Gutiérrez",
+      "FirstName": "Paulino",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 104,
+      "EventId": 1,
+      "PlayerId": 2,
+      "LastName": "Paniagua Gutiérrez",
+      "FirstName": "Enrique",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 105,
+      "EventId": 1,
+      "PlayerId": 3,
+      "LastName": "Glauco",
+      "FirstName": "Soto Fajardo",
+      "Category": "+45",
+      "Present": false,
+      "Remarks": "Ausente por lesión"
+    },
+    {
+      "AttendanceId": 106,
+      "EventId": 1,
+      "PlayerId": 4,
+      "LastName": "Bonilla Miranda",
+      "FirstName": "Hector",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 107,
+      "EventId": 1,
+      "PlayerId": 7,
+      "LastName": "Obando González",
+      "FirstName": "Michael",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 108,
+      "EventId": 1,
+      "PlayerId": 8,
+      "LastName": "Thyne Hodgson",
+      "FirstName": "Melvin",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 109,
+      "EventId": 1,
+      "PlayerId": 9,
+      "LastName": "Calvo Valerio",
+      "FirstName": "Humberto",
+      "Category": "+45",
+      "Present": false,
+      "Remarks": "Ausente por trabajo"
+    },
+    {
+      "AttendanceId": 110,
+      "EventId": 1,
+      "PlayerId": 10,
+      "LastName": "Carro Gutiérrez",
+      "FirstName": "Jaime",
+      "Category": "+45",
+      "Present": false,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 111,
+      "EventId": 1,
+      "PlayerId": 11,
+      "LastName": "Escobar Zornosa",
+      "FirstName": "Alfonso",
+      "Category": "+45",
+      "Present": false,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 112,
+      "EventId": 1,
+      "PlayerId": 12,
+      "LastName": "Macis Marín",
+      "FirstName": "Randall",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 113,
+      "EventId": 1,
+      "PlayerId": 13,
+      "LastName": "Chinchilla Piedra",
+      "FirstName": "Ramón",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": ""
+    },
+    {
+      "AttendanceId": 114,
+      "EventId": 1,
+      "PlayerId": 14,
+      "LastName": "Solano Segura",
+      "FirstName": "Josue",
+      "Category": "+45",
+      "Present": false,
+      "Remarks": "Ausente por lesión"
+    },
+    {
+      "AttendanceId": 115,
+      "EventId": 2,
+      "PlayerId": 5,
+      "LastName": "Jimenez Parada",
+      "FirstName": "Elmer",
+      "Category": "+45",
+      "Present": true,
+      "Remarks": "Jugó todo el partido completo"
+    }
+  ]
+}

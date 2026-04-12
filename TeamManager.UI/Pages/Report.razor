@@ -1,0 +1,224 @@
+﻿@page "/attendance"
+@inject HttpClient Http
+@inject JsonSerializerOptions options
+
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using TeamManager.UI.Helpers
+@using TeamManager.UI.Models
+
+<PageTitle>Reporte</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Reporte Mensual por tipo de evento</MudText>
+<MudStack Row Class="justify-space-between mud-width-full">
+
+    <MudSelect T="Activity" @bind-Value="SelectedActivity" Variant="Variant.Outlined" Label="Tipo de actividad">
+        @foreach (var act in Enum.GetValues(typeof(Activity)).Cast<Activity>())
+        {
+            <MudSelectItem Value="act">@ActivityTranslator.TranslateActivity(act)</MudSelectItem>
+        }
+    </MudSelect>
+    <MudDatePicker @bind-Date="_selectedDate" Label="Seleccionar mes" Variant="Variant.Outlined" OpenTo="OpenTo.Month" FixDay="1" DateFormat="MM/yyyy" />
+</MudStack>
+
+
+<MudStack Justify="Justify.Center" Spacing="3">
+    <MudTable Items="@eventlist" Hover="true" SortLabel="Sort By" Elevation="2" AllowUnsorted="false" Dense="true" Bordered="true">
+            <HeaderContent>
+                <MudTh>Observaciones</MudTh>
+                <MudTh>Ubicación</MudTh>
+                <MudTh>Fecha</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Observaciones">@context.Description</MudTd>
+                <MudTd DataLabel="Ubicación">@context.Location</MudTd>
+                <MudTd DataLabel="Fecha">@context.Date.ToString("dd-MM-yyyy")</MudTd>
+            </RowTemplate>
+    </MudTable>
+
+   @*  <MudTable Items="@attendanceList" Hover="true" SortLabel="Sort By" Elevation="2" AllowUnsorted="false" Dense="true" Bordered="true">
+        <HeaderContent>
+            <MudTh>#</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Attendance, object>(p => p.LastName)">Apellidos</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Attendance, object>(p => p.FirstName)">Nombre</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Attendance, object>(p => p.Category)">Categoría</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Attendance, object>(p => p.Notes)">Asistencia</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="#">@(attendanceList.IndexOf(context) + 1)</MudTd>
+            <MudTd DataLabel="Apellidos">@context.LastName</MudTd>
+            <MudTd DataLabel="Nombre">@context.FirstName</MudTd>         
+            <MudTd DataLabel="Categoria">@context.Category</MudTd>
+            <MudTd
+               Style="@($"background-color:{(context.Present ? "lightgreen" : "lightcoral")};")">
+                @(context.Present ? "Presente" : context.Notes)
+            </MudTd> 
+
+
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+        </PagerContent>
+    </MudTable>
+    <p>Total de jugadores: @attendanceList.Count</p>
+
+
+    <p>
+        Total de Semanas: @weeksInMonth
+        @foreach (var item in weeklyList)
+        {
+            <p>@item.LastName, @item.FirstName</p>
+            @foreach (var kvp in item.Weeks)
+            {
+                <p>Semana @kvp.Key: @kvp.Value</p>
+            }
+            <hr />
+        }
+    </p> *@
+    <MudTable Items="@weeklyList" Hover="true" SortLabel="Sort By" Elevation="2" AllowUnsorted="false" Dense="true" Bordered="true">
+        <HeaderContent>
+            <MudTh>Apellidos</MudTh>
+            <MudTh>Nombre</MudTh>
+            <MudTh>Categoría</MudTh>
+            @for (int w = 1; w <= weeksInMonth; w++)
+            {
+                var weekNumber = w;
+                <MudTh>Semana @weekNumber</MudTh>
+            }
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.LastName</MudTd>
+            <MudTd>@context.FirstName</MudTd>
+            <MudTd>@context.Category</MudTd>
+            @for (int w = 1; w <= weeksInMonth; w++)
+            {
+                var weekNumber = w;
+                var value = context.Weeks.ContainsKey(weekNumber) ? context.Weeks[weekNumber] : "Ausente";
+                <MudTd Style="@($"background-color:{(value == "Presente" ? "lightgreen" : "lightcoral")};")">
+                    @value
+                </MudTd>
+            }
+        </RowTemplate>
+    </MudTable>
+    <p>Total de jugadores: @weeklyList.Count</p>
+
+
+</MudStack>
+@code {
+    private Activity _selectedActivity;
+    public Activity SelectedActivity
+    {
+        get => _selectedActivity;
+        set
+        {
+            _selectedActivity = value;
+            FilterEvents(); // se ejecuta automáticamente al cambiar
+        }
+    }
+
+    private DateTime? _selectedDate = DateTime.Today;
+    private List<Attendance> allAttendances = new();
+    private List<Attendance> attendanceList = new();
+    private List<Event> eventlist = new();
+    private List<Event> allEvents = new();
+    private int weeksInMonth;// TODO: Eliminar si se hace el filtrado desde el backend
+
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        options.Converters.Add(new JsonStringEnumConverter());
+
+        var AttendancesData = await Http.GetFromJsonAsync<AttendanceResponse>("sample-data/attendances.json");
+        allAttendances = AttendancesData.Attendances;
+       // attendancelist = eventData.Attendances;
+        var eventsData = await Http.GetFromJsonAsync<EventResponse>("sample-data/events.json", options);
+        allEvents = eventsData.Events;
+        FilterEvents();
+
+    }
+
+    private void FilterEvents()
+    {
+        eventlist = allEvents
+            .Where(e => e.EventType == _selectedActivity && e.Date.Month == _selectedDate?.Month && e.Date.Year == _selectedDate?.Year)
+            .ToList();
+        var eventIds = eventlist.Select(e => e.EventId).ToHashSet();
+
+        attendanceList = allAttendances
+            .Where(a => eventIds.Contains(a.EventId))
+            .ToList();
+
+        if (_selectedDate.HasValue)
+        {
+            weeksInMonth = GetWeeksInMonth(_selectedDate.Value);
+        }
+
+
+        // Construir lista semanal
+        BuildWeeklyAttendance();
+    
+    }
+
+    //TODO: Esto es solo para el POC y luego se deberá eliminar, ya que el filtrado se hará desde el backend
+    private int GetWeekOfMonth(DateTime date)
+    {
+        return (date.Day - 1) / 7 + 1;
+    }
+
+    private int GetWeeksInMonth(DateTime date)
+    {
+        var daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
+        return (int)Math.Ceiling(daysInMonth / 7.0);
+    }
+
+
+    public class AttendanceWeekly
+    {
+        public string? LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? Category { get; set; }
+        public Dictionary<int, string> Weeks { get; set; } = new();
+    }
+
+    private List<AttendanceWeekly> weeklyList = new();
+
+    private void BuildWeeklyAttendance()
+    {
+        var eventWeekMap = allEvents.ToDictionary(
+            e => e.EventId,
+            e => GetWeekOfMonth(e.Date)
+        );
+
+        weeklyList = attendanceList
+            .GroupBy(a => new { a.LastName, a.FirstName})
+            .Select(g =>
+            {
+                var record = new AttendanceWeekly
+                {
+                    LastName = g.Key.LastName,
+                    FirstName = g.Key.FirstName,
+                    Category = g.First().Category
+
+                };
+
+                foreach (var attendance in g)
+                {
+                    if (eventWeekMap.TryGetValue(attendance.EventId, out var week))
+                    {
+                        record.Weeks[week] = attendance.Present ? "Presente" : (!string.IsNullOrEmpty(attendance.Notes) ? attendance.Notes : "Ausente");
+
+                    }
+                }
+
+                return record;
+            })
+            .ToList();
+    }
+}
+
+
+

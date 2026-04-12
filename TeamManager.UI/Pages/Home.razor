@@ -1,0 +1,103 @@
+@page "/"
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+@using TeamManager.UI.Helpers
+@using TeamManager.UI.Models
+
+<PageTitle>Registro</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Control de Asistencia</MudText>
+<MudTabs Elevation="3" Rounded="true" ApplyEffectsToContainer="true" TabPanelsClass="pa-3" Color="Color.Dark">
+    <MudTabPanel Text="Registrar Evento">
+        @* <MudText Class="mb-8">Seleccione la información requerida para registrar el evento</MudText> *@
+        <MudStack Row Class="justify-space-between mud-width-full">
+
+            <MudSelect T="Activity" @bind-Value="_selectedActivity" Variant="Variant.Outlined" Label="Tipo de actividad">
+                @foreach (var act in Enum.GetValues(typeof(Activity)).Cast<Activity>())
+                {
+                    <MudSelectItem Value="act">@ActivityTranslator.TranslateActivity(act)</MudSelectItem>
+                }
+            </MudSelect>
+            <MudDatePicker @bind-Date="_selectedDate" Label="Fecha del evento" Variant="Variant.Outlined" />
+        </MudStack>
+        <MudStack Row Class="justify-space-between mud-width-full">
+            <MudTextField T="string"
+                          Label="Observaciones"
+                          Variant="Variant.Outlined"
+                          Lines="3"
+                          MaxLines="6"
+                          Sizing="InputSizing.Auto"
+                          Placeholder="" />
+        </MudStack>
+
+       
+        <MudStack Justify="Justify.Center">
+                <MudTable Items="@players" Hover="true" SortLabel="Sort By" Elevation="3" AllowUnsorted="false" Dense="true" Bordered="true" FixedHeader="true" Height="" MultiSelection="true"
+                          SelectionChangeable="true" @bind-SelectedItems="_selectedPlayers">
+                    <HeaderContent> 
+                            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.FullName)">Nombre</MudTableSortLabel></MudTh>
+                        @* <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.LastName)">Apellidos</MudTableSortLabel></MudTh> *@
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>@context.FullName </MudTd>
+                        @* <MudTd DataLabel="Apellidos">@context.LastName</MudTd> *@
+            
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+                    </PagerContent>
+                </MudTable>
+            
+            <MudText>Seleccionado (@_selectedPlayers?.Count): @(_selectedPlayers == null ? "" : string.Join(", ", _selectedPlayers.OrderBy(x => x.FirstName).Select(x => x.FirstName)))</MudText>
+        </MudStack>
+
+        <MudStack Justify="Justify.FlexEnd" AlignItems="AlignItems.End">
+            <MudTooltip Text="Guardar el registro de asistencia" Placement="Placement.Right">
+                <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Save" OnClick="SaveData" />
+            </MudTooltip>
+        </MudStack>
+    </MudTabPanel>
+    <MudTabPanel Text="Historial de Eventos">
+        <MudText Class="mb-8">Aquí se mostrarán los eventos registrados</MudText>
+        <!-- Aquí puedes agregar una tabla o lista para mostrar el historial de eventos -->
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+    private Activity _selectedActivity;
+    private DateTime? _selectedDate = DateTime.Today;
+    private HashSet<Player> _selectedPlayers = new();
+
+    private List<Player> players = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        players = await Http.GetFromJsonAsync<List<Player>>("sample-data/players.json");
+    }
+
+    // private void OnPlayerSelectionChanged(Player player, bool isChecked)
+    // {
+    //     if (isChecked)
+    //     {
+    //         if (!_selectedPlayers.Contains(player))
+    //             _selectedPlayers.Add(player);
+    //     }
+    //     else
+    //     {
+    //         _selectedPlayers.Remove(player);
+    //     }
+    // }
+
+
+    private void SaveData()
+    {
+        // Aquí simulas el guardado en BD
+        // ...
+
+        // Mostrar alerta
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+        Snackbar.Add("Registro de evento satisfactorio", Severity.Success);
+    }
+
+
+}

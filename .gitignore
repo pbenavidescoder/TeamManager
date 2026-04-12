@@ -1,0 +1,25 @@
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build
+bin/
+obj/
+publish/
+
+# Dotnet user secrets
+secrets.json
+
+# Config local
+appsettings.json
+appsettings.Development.json
+appsettings.*.local
+appsettings.json.local
+
+#User-specific files
+API\ externas\ simuladas.png
+Hexagonal\ Diagram\ Conversation\ context.txt

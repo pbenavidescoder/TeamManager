@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TeamManager.UI/TeamManager.UI.csproj" />
+  <Project Path="TeamManagerAPI/TeamManagerAPI.csproj" />
+</Solution>
