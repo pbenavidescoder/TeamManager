@@ -1,0 +1,5 @@
+C:\Users\pbena\source\repos\TeamManager\TeamManager.UI\bin\Release\net10.0\publish\wwwroot\404.html
+C:\Users\pbena\source\repos\TeamManager\TeamManager.UI\bin\Release\net10.0\publish\wwwroot\index.html
+C:\Users\pbena\source\repos\TeamManager\TeamManager.UI\bin\Release\net10.0\publish\TeamManager.UI.runtimeconfig.json
+C:\Users\pbena\source\repos\TeamManager\TeamManager.UI\bin\Release\net10.0\publish\dotnet.js
+C:\Users\pbena\source\repos\TeamManager\TeamManager.UI\bin\Release\net10.0\publish\web.config

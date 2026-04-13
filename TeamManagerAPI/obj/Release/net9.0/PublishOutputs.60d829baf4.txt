@@ -1,0 +1,10 @@
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\TeamManagerAPI.exe
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\TeamManagerAPI.dll
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\TeamManagerAPI.deps.json
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\TeamManagerAPI.runtimeconfig.json
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\TeamManagerAPI.pdb
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\Microsoft.Data.Sqlite.dll
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\Microsoft.OpenApi.dll
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\SQLitePCLRaw.core.dll
+C:\Users\pbena\source\repos\TeamManager\TeamManagerAPI\bin\Release\net9.0\publish\Swashbuckle.AspNetCore.SwaggerUI.dll
