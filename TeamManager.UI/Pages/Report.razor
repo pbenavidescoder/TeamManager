@@ -87,14 +87,15 @@
             }
         </HeaderContent>
         <RowTemplate>
-            <MudTd>@context.LastName</MudTd>
-            <MudTd>@context.FirstName</MudTd>
-            <MudTd>@context.Category</MudTd>
+            <MudTd DataLabel="Apellidos">@context.LastName</MudTd>
+            <MudTd DataLabel="Nombre">@context.FirstName</MudTd>
+            <MudTd DataLabel="Categoria">@context.Category</MudTd>
             @for (int w = 1; w <= weeksInMonth; w++)
             {
                 var weekNumber = w;
+                var label = $"Semana {weekNumber}";
                 var value = context.Weeks.ContainsKey(weekNumber) ? context.Weeks[weekNumber] : "Ausente";
-                <MudTd Style="@($"background-color:{(value == "Presente" ? "lightgreen" : "lightcoral")};")">
+                <MudTd Style="@($"background-color:{(value == "Presente" ? "lightgreen" : "lightcoral")};")" DataLabel="@label"> 
                     @value
                 </MudTd>
             }

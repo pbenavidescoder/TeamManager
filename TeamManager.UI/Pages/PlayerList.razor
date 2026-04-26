@@ -1,12 +1,11 @@
 ﻿@page "/playerlist"
 @using TeamManager.UI.Models
 @inject HttpClient Http
-
+@inject ISnackbar Snackbar
 
 <PageTitle>Jugadores</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Lista de jugadores</MudText>
-<MudText Typo="Typo.body1" Class="mb-8">Maxibaloncesto Heredia</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Maxibaloncesto Heredia</MudText>
 
 @if (@players == null)
 {
@@ -14,29 +13,58 @@
 }
 else
 {
-    <MudTable Items="@players" Hover="true" SortLabel="Sort By" Elevation="2" AllowUnsorted="false" Dense="true">
-        <HeaderContent>
-            <MudTh>#</MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.FirstName)">Nombre</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.LastName)">Apellidos</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Category)">Categoría</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Position)">Posición</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Status)">Estado</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Jersey)">Jersey</MudTableSortLabel></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="#">@(players.IndexOf(context) + 1)</MudTd>
-            <MudTd DataLabel="Nombre">@context.FirstName</MudTd>
-            <MudTd DataLabel="Apellidos">@context.LastName</MudTd>
-            <MudTd DataLabel="Categoria">@context.Category</MudTd>
-            <MudTd DataLabel="Posición">@context.Position</MudTd>
-            <MudTd DataLabel="Estado">@context.Status</MudTd>
-            <MudTd DataLabel="Jersey">@context.Jersey</MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
-        </PagerContent>
-    </MudTable>
+    <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mb-4">
+        <MudText Typo="Typo.h6">Lista de jugadores</MudText>
+        <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="AddPlayer">
+            <MudIcon Icon="@Icons.Material.Filled.Add" /> Nuevo
+        </MudButton>
+    </MudStack>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+         <MudList T="string" Dense="true">
+            @foreach (var player in @players)
+            {
+                <MudListItem>
+                    @* <MudAvatar Size="Size.Medium" Image="@player.Photo" /> *@
+                    <MudText Typo="Typo.body1">@player.FullName - #@player.Jersey</MudText>
+                    <MudText Typo="Typo.body1">@player.Position - @player.Category</MudText>
+                    <MudSpacer />
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="@(()=>EditPlayer(player))" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(()=>DeletePlayer(player))" />
+                </MudListItem>
+            }
+        </MudList>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudTable Items="@players" Hover="true" SortLabel="Sort By" Elevation="2" AllowUnsorted="false" Dense="true">
+            <HeaderContent>
+                <MudTh>#</MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.FirstName)">Nombre</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.LastName)">Apellidos</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Category)">Categoría</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Position)">Posición</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Status)">Estado</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.Jersey)">Jersey</MudTableSortLabel></MudTh>
+                <MudTh>Acciones</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="#">@(players.IndexOf(context) + 1)</MudTd>
+                <MudTd DataLabel="Nombre">@context.FirstName</MudTd>
+                <MudTd DataLabel="Apellidos">@context.LastName</MudTd>
+                <MudTd DataLabel="Categoria">@context.Category</MudTd>
+                <MudTd DataLabel="Posición">@context.Position</MudTd>
+                <MudTd DataLabel="Estado">@context.Status</MudTd>
+                <MudTd DataLabel="Jersey">@context.Jersey</MudTd>
+                <MudTd DataLabel="Acciones">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="@(() => EditPlayer(context))" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => DeletePlayer(context))" />
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+            </PagerContent>
+        </MudTable>
+    </MudHidden>
+    
     <p>Total de jugadores: @players.Count</p>
 
 }
@@ -49,4 +77,21 @@ else
         players = await Http.GetFromJsonAsync<List<Player>>("sample-data/players.json");
     }
 
+    protected void AddPlayer()
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+        Snackbar.Add("Boton Nuevo jugador presionado", Severity.Success);
+    }
+
+    protected void EditPlayer(Player player)
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+        Snackbar.Add($"Editar jugador: {player.FullName}", Severity.Info);
+    }
+
+    protected void DeletePlayer(Player player)
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+        Snackbar.Add($"Eliminar jugador: {player.FullName}", Severity.Warning);
+    }
 }
