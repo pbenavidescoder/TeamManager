@@ -10,9 +10,12 @@
      string Jersey,
      string AvatarPath
 
+
  )
     {
         public string FullName => $"{FirstName} {LastName}";
+        public AttendanceStatus Assistance { get; set; } = AttendanceStatus.AbsentUnjustified;
+
     }
 
 }

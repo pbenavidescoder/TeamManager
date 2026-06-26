@@ -129,16 +129,24 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
-        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
-        options.Converters.Add(new JsonStringEnumConverter());
+        try
+        {
+            var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            options.Converters.Add(new JsonStringEnumConverter());
 
-        var AttendancesData = await Http.GetFromJsonAsync<AttendanceResponse>("sample-data/attendances.json");
-        allAttendances = AttendancesData.Attendances;
-       // attendancelist = eventData.Attendances;
-        var eventsData = await Http.GetFromJsonAsync<EventResponse>("sample-data/events.json", options);
-        allEvents = eventsData.Events;
-        FilterEvents();
+            var AttendancesData = await Http.GetFromJsonAsync<AttendanceResponse>("sample-data/attendances.json");
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(AttendancesData));
+            allAttendances = AttendancesData.Attendances;
+            // attendancelist = eventData.Attendances;
+            var eventsData = await Http.GetFromJsonAsync<EventResponse>("sample-data/events.json", options);
+            allEvents = eventsData.Events;
+            FilterEvents();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        
 
     }
 

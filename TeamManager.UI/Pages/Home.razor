@@ -32,23 +32,69 @@
 
        
         <MudStack Justify="Justify.Center">
-                <MudTable Items="@players" Hover="true" SortLabel="Sort By" Elevation="3" AllowUnsorted="false" Dense="true" Bordered="true" FixedHeader="true" Height="" MultiSelection="true"
-                          SelectionChangeable="true" @bind-SelectedItems="_selectedPlayers">
+                <MudTable T="Player" Items="@players" Hover="true" SortLabel="Sort By" Elevation="3" AllowUnsorted="false" Dense="true" Bordered="true" FixedHeader="true" Height=""
+                     EditTrigger="TableEditTrigger.RowClick" RowEditPreview="BackUpRow" RowEditCommit="CommitRowChanges">
                     <HeaderContent> 
-                            <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.FullName)">Nombre</MudTableSortLabel></MudTh>
-                        @* <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.LastName)">Apellidos</MudTableSortLabel></MudTh> *@
+                        <MudTd Style="width: 50px;">
+                            <MudCheckBox T="bool"
+                                    Value="@AllChecked"
+                                    ValueChanged="OnSelectAllChanged" />
+                        </MudTd>
+                        <MudTh><MudTableSortLabel SortBy="new Func<Player, object>(p => p.FullName)">Nombre</MudTableSortLabel></MudTh>
+                        <MudTh>Asistencia</MudTh>
                     </HeaderContent>
                     <RowTemplate>
-                        <MudTd>@context.FullName </MudTd>
-                        @* <MudTd DataLabel="Apellidos">@context.LastName</MudTd> *@
-            
+                        <MudTd>
+                            <MudCheckBox T="bool"
+                                    Value="@_selectedPlayers.Any(x => x.PlayerId == context.PlayerId)"
+                                    ValueChanged="@(isChecked => OnCheckRowChanged(context, isChecked))" />
+                        </MudTd>
+
+                        <MudTd DataLabel="Nombre">@context.FullName</MudTd>
+                        <!--<MudTd DataLabel="Asistencia">@context.Assistance.GetDisplayName()</MudTd>-->
+                        <MudTd DataLabel="Asistencia">
+                        @if (context.Assistance != @AttendanceStatus.AbsentUnjustified && context.Assistance != @AttendanceStatus.Present)
+                        {
+                            <MudText T="string">@context.Assistance.GetDisplayName()</MudText>
+                        }
+                        else if (_selectedPlayers.Contains(context))
+                        {
+                            <MudText T="string">@AttendanceStatus.Present.GetDisplayName()</MudText>
+                        }
+                        else
+                        {
+                            <MudText T="string">@AttendanceStatus.AbsentUnjustified.GetDisplayName()</MudText>
+                        }
+                        </MudTd>
                     </RowTemplate>
+                 <RowEditingTemplate>
+                    <MudTd>
+                        <MudCheckBox T="bool"
+                            Value="@_selectedPlayers.Any(x => x.PlayerId == context.PlayerId)"
+                            ReadOnly= "true" />
+                    </MudTd>
+                    <MudTd DataLabel="Nombre">@context.FullName </MudTd>
+                    <MudTd DataLabel="Asistencia">
+                        <MudSelect T="AttendanceStatus" @bind-Value="context.Assistance" Dense="true">
+                            @foreach (var status in Enum.GetValues<AttendanceStatus>())
+                            {
+                                <MudSelectItem Value="@status">@status.GetDisplayName()</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudTd>
+                </RowEditingTemplate> 
                     <PagerContent>
                         <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
                     </PagerContent>
                 </MudTable>
             
-            <MudText>Seleccionado (@_selectedPlayers?.Count): @(_selectedPlayers == null ? "" : string.Join(", ", _selectedPlayers.OrderBy(x => x.FirstName).Select(x => x.FirstName)))</MudText>
+            <!--<MudText>Seleccionado (@_selectedPlayers?.Count): @(_selectedPlayers == null ? "" : string.Join(", ", _selectedPlayers.OrderBy(x => x.FirstName).Select(x => x.FirstName)))</MudText> -->
+            <MudText>Seleccionado (@(players?.Count(x => x.Assistance == AttendanceStatus.Present || x.Assistance == AttendanceStatus.PresentNoPractice))): 
+                @(string.Join(", ", players
+                .Where(x => x.Assistance == AttendanceStatus.Present || x.Assistance == AttendanceStatus.PresentNoPractice)
+                .OrderBy(x => x.FirstName)
+                .Select(x => x.FirstName))) 
+            </MudText>
         </MudStack>
 
         <MudStack Justify="Justify.FlexEnd" AlignItems="AlignItems.End">
@@ -66,28 +112,78 @@
 @code {
     private Activity _selectedActivity;
     private DateTime? _selectedDate = DateTime.Today;
-    private HashSet<Player> _selectedPlayers = new();
-
+    private Player? playerBeforeEdit;
     private List<Player> players = new();
+    private List<Player> _selectedPlayers = new();
+    private bool AllChecked => players.Count > 0 && _selectedPlayers.Count == players.Count;
+
+    private void OnSelectAllChanged(bool isAllChecked)
+    {
+        _selectedPlayers.Clear();
+        if (isAllChecked)
+        {
+            foreach (var player in players)
+            {
+                player.Assistance = AttendanceStatus.Present;
+                _selectedPlayers.Add(player);
+            }
+        }
+        else
+        {
+            foreach (var player in players)
+            {
+                player.Assistance = AttendanceStatus.AbsentUnjustified;
+            }
+        }
+    }
+
+    private void OnCheckRowChanged(Player player, bool isChecked)
+    {
+        var exists = _selectedPlayers.FirstOrDefault(p => p.PlayerId == player.PlayerId);
+        if (isChecked)
+        {
+            if (player.Assistance != AttendanceStatus.Present || player.Assistance != AttendanceStatus.PresentNoPractice)
+                player.Assistance = AttendanceStatus.Present;
+            if (exists!=null) // just playing safe by removing the existing player
+            {
+                _selectedPlayers.RemoveAll(p => p.PlayerId == player.PlayerId);
+            }
+            _selectedPlayers.Add(player);
+        }
+        else
+        {
+            player.Assistance = AttendanceStatus.AbsentUnjustified;
+            _selectedPlayers.RemoveAll(p => p.PlayerId == player.PlayerId);
+        }
+    }
+
+    private void BackUpRow(object element)
+    {
+        var selectedPlayer = element as Player;
+        playerBeforeEdit = selectedPlayer; //with { Assistance = selectedPlayer.Assistance };
+    }
+
+    private void CommitRowChanges(object element)
+    {
+        var player = element as Player;
+        _selectedPlayers.RemoveAll(p => p.PlayerId == player.PlayerId);
+
+        if (player.Assistance == AttendanceStatus.Present || player.Assistance == AttendanceStatus.PresentNoPractice)
+        {
+           _selectedPlayers.Add(player);
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
         players = await Http.GetFromJsonAsync<List<Player>>("sample-data/players.json");
     }
 
-    // private void OnPlayerSelectionChanged(Player player, bool isChecked)
-    // {
-    //     if (isChecked)
-    //     {
-    //         if (!_selectedPlayers.Contains(player))
-    //             _selectedPlayers.Add(player);
-    //     }
-    //     else
-    //     {
-    //         _selectedPlayers.Remove(player);
-    //     }
-    // }
-
+    protected void EditPlayer(Player player)
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+        Snackbar.Add($"Editar jugador: {player.FullName}", Severity.Info);
+    }
 
     private void SaveData()
     {
@@ -95,6 +191,13 @@
         // ...
 
         // Mostrar alerta
+        foreach (var player in players)
+        {
+            if (_selectedPlayers.Contains(player))
+            {
+                player.Assistance = AttendanceStatus.Present;
+            }
+        }
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
         Snackbar.Add("Registro de evento satisfactorio", Severity.Success);
     }
