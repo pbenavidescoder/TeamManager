@@ -1,5 +1,5 @@
-﻿using TeamManagerAPI.Domain;
-using TeamManagerAPI.Services;
+﻿using TeamManager.Application.UseCases.Players;
+
 
 namespace TeamManagerAPI.Endpoints
 {
@@ -7,9 +7,14 @@ namespace TeamManagerAPI.Endpoints
     {
         public static void MapPlayerEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/players", (PlayerService service) => service.GetPlayers());
-            routes.MapPost("/players", (PlayerService service, Player player) => service.AddPlayer(player));
-            // PUT y DELETE similares
+            routes.MapGet("/players", async (GetPlayersUseCase useCase) =>
+            {
+                var players = await useCase.ExecuteAsync();
+                return Results.Ok(players);
+            });
+
+            //routes.MapPost("/players", (PlayerService service, Player player) => service.AddPlayer(player));
+            //// PUT y DELETE similares
         }
 
 

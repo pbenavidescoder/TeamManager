@@ -1,16 +1,34 @@
+using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
+using TeamManager.Application.UseCases.Players;
+using TeamManager.Domain.Interfaces;
 using TeamManagerAPI.Endpoints;
 using TeamManagerAPI.Infrastructure;
-using TeamManagerAPI.Repositories;
-using TeamManagerAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<DbConnectionFactory>();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddScoped<DbConnectionFactory>(_ =>
+        new DbConnectionFactory(
+            builder.Configuration.GetConnectionString("SqliteConnection")!,
+            () => new SqliteConnection(builder.Configuration.GetConnectionString("SqliteConnection")!)
+        ));
+}
+else
+{
+    builder.Services.AddScoped<DbConnectionFactory>(_ =>
+        new DbConnectionFactory(
+            builder.Configuration.GetConnectionString("AzureSqlConnection")!,
+            () => new SqlConnection(builder.Configuration.GetConnectionString("AzureSqlConnection")!)
+        ));
+}
+
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<PlayerService>();
+builder.Services.AddScoped<GetPlayersUseCase>();
 
 
 var app = builder.Build();

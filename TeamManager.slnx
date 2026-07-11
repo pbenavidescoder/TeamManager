@@ -1,4 +1,7 @@
 <Solution>
+  <Project Path="TeamManager.Application/TeamManager.Application.csproj" Id="f81b208e-3100-404e-ae10-4578f05a440a" />
+  <Project Path="TeamManager.Domain/TeamManager.Domain.csproj" Id="151afc7a-b343-48aa-a0ab-a7ea399b517a" />
+  <Project Path="Teammanager.Infrastructure/Teammanager.Infrastructure.csproj" Id="7d8c9617-d223-41cb-a24d-71100c924ee9" DisplayName="TeamManager.Infrastructure" />
   <Project Path="TeamManager.UI/TeamManager.UI.csproj" />
-  <Project Path="TeamManagerAPI/TeamManagerAPI.csproj" />
+  <Project Path="TeamManagerAPI/TeamManager.API.csproj" />
 </Solution>
